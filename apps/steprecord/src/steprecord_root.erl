@@ -18,9 +18,7 @@ content_types_accepted(Req, State) ->
 handle_post(Req, State) ->
     {ok, Body, _} = cowboy_req:body(Req),
     Json = jsx:decode(Body, [return_maps]),
-    io:format("Body:~p~n", [Json]),
     Imei = maps:get(<<"imei">>, Json),
-    io:format("Imei:~p~n", [Imei]),
     Channel = maps:get(<<"channel">>, Json),
     ClientId = maps:get(<<"clientId">>, Json),
     Device = maps:get(<<"device">>, Json),
@@ -33,11 +31,11 @@ handle_post(Req, State) ->
             dets:insert(database_imei, 
                         {Imei, ClientId, Step, Channel, Device, Mem})
     end,
-    case dets:lookup(database_clientid, ClientId) of
+    case dets:lookup(database_client_id, ClientId) of
         [{ClientId, _, Step00, _, _, _}] when Step00 >= Step ->
             ignore;
         _ ->
-            dets:insert(database_clientid, 
+            dets:insert(database_client_id, 
                         {ClientId, Imei, Step, Channel, Device, Mem})
     end,
     {true, Req, State}.

@@ -1,16 +1,18 @@
 {application, steprecord,
- [{description, "An OTP application"},
+  [{description, "An OTP application"},
   {vsn, "0.1.0"},
   {registered, []},
   {mod, { steprecord_app, []}},
   {applications,
-   [kernel,
-    stdlib
-   ]},
+    [kernel,
+    stdlib,
+    cowboy,
+    jsx
+    ]},
   {env,[]},
   {modules, []},
 
   {maintainers, []},
   {licenses, []},
   {links, []}
- ]}.
+  ]}.

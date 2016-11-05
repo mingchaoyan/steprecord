@@ -30,3 +30,6 @@ tar -zxvf steprecord-0.1.0.tar.gz
 > steprecord_app:report(imei).
 > steprecord_app:report(client_id).
 ```
+
+## version
+[Semantic Versioning 2.0.0](http://semver.org/)

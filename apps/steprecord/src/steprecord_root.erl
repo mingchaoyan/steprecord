@@ -23,8 +23,10 @@ content_types_provided(Req, State) ->
     {[{{<<"application">>, <<"json">>, []}, handle_get}], Req, State}.
 
 handle_get(Req, State) ->
-    ImeiResult = steprecord_report:report(imei),
-    ClientIdResult = steprecord_report:report(client_id),
+    Qs = cowboy_req:parse_qs(Req),
+    {<<"channel">>, Channel} = lists:keyfind(<<"channel">>, 1, Qs),
+    ImeiResult = steprecord_report:report(imei, Channel),
+    ClientIdResult = steprecord_report:report(client_id, Channel),
     Body = jsx:encode(#{<<"imei">> => ImeiResult, <<"client_id">> => ClientIdResult}),
     {Body, Req, State}.
 
@@ -38,17 +40,13 @@ handle_post(Req, State) ->
     Mem = maps:get(<<"mem">>, Json),
     Step = maps:get(<<"step">>, Json),
     case dets:lookup(database_imei, Imei) of
-        [{Imei, _, Step0, _, _, _}] when Step0 >= Step ->
-            ignore;
-        _ ->
-            dets:insert(database_imei, 
+        [{Imei, _, Step0, _, _, _}] when Step0 >= Step -> ignore;
+        _ -> dets:insert(database_imei, 
                         {Imei, ClientId, Step, Channel, Device, Mem})
     end,
     case dets:lookup(database_client_id, ClientId) of
-        [{ClientId, _, Step00, _, _, _}] when Step00 >= Step ->
-            ignore;
-        _ ->
-            dets:insert(database_client_id, 
+        [{ClientId, _, Step00, _, _, _}] when Step00 >= Step -> ignore;
+        _ -> dets:insert(database_client_id, 
                         {ClientId, Imei, Step, Channel, Device, Mem})
     end,
     {true, Req, State}.

@@ -1,6 +1,10 @@
 # steprecord
 Pure Erlang project for tracing which step the client crashes
 
+## requirements
+* Erlang/OTP 
+* rebar3
+
 ## start
 ```
 rebar3 compile

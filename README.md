@@ -33,3 +33,9 @@ tar -zxvf steprecord-0.1.0.tar.gz
 
 ## version
 [Semantic Versioning 2.0.0](http://semver.org/)
+
+## todo
+- [ ] dialyzer
+- [ ] eunit
+- [ ] mnesia?
+- [ ] cross-compile

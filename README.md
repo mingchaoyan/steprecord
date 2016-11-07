@@ -38,4 +38,3 @@ tar -zxvf steprecord-0.1.0.tar.gz
 - [ ] dialyzer
 - [ ] eunit
 - [ ] mnesia?
-- [ ] cross-compile
